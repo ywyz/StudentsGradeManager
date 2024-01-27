@@ -16,9 +16,9 @@ class DisplayMessage
 {
 public:
     void displayMenu();
-    void displayStudent(vector<Student> stu);
-    void displayCourse(vector<Course> cou);
-    void displayChoose(vector<Choose> cho);
+    void displayStudent();
+    void displayCourse();
+    void displayChoose();
     void displayStudent(Student stu);
     void displayCourse(Course cou);
     void displayChoose(Choose cho);

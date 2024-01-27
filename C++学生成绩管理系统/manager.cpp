@@ -2,7 +2,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
 #include <sstream>
 #include <algorithm>
 #include "data.h"
@@ -24,31 +23,31 @@ void DisplayMessage::displayMenu()
     cout << "请输入您的选择：";
 }
 
-void DisplayMessage::displayStudent(vector<Student> student)
+void DisplayMessage::displayStudent()
 {
     cout << "学生信息显示：" << endl;
     cout << "学生姓名    学生年龄    学生性别    学生学号" << endl;
-    for (auto item : student)
+    for (auto &item : student)
     {
         cout << item.name << "  " << item.age << "  " << item.sex << "  " << item.id << endl;
     }
 }
 
-void DisplayMessage::displayCourse(vector<Course> course)
+void DisplayMessage::displayCourse()
 {
     cout << "课程信息显示：" << endl;
     cout << "课程名称    课程学分    课程号" << endl;
-    for (auto item : course)
+    for (auto &item : course)
     {
         cout << item.name << "  " << item.credit << "  " << item.id << endl;
     }
 }
 
-void DisplayMessage::displayChoose(vector<Choose> choose)
+void DisplayMessage::displayChoose()
 {
     cout << "选课信息显示：" << endl;
     cout << "学生学号    课程号    成绩" << endl;
-    for (auto item : choose)
+    for (auto &item : choose)
     {
         cout << item.student_id << "  " << item.course_id << "  " << item.score << endl;
     }
@@ -195,6 +194,10 @@ FileManager::FileManager()
         display.displayWrongMessage(4);
         exit(0);
     }
+}
+
+FileManager::~FileManager()
+{
 }
 
 string FileManager::getFilePath()
@@ -509,11 +512,11 @@ void ChooseManager::add()
     long student_id, course_id;
     int score;
     cout << "请输入学生学号：";
-    student_id = checkInput<long>(3);
+    student_id = checkInput();
     cout << "请输入课程号：";
-    course_id = checkInput<long>(3);
+    course_id = checkInput();
     cout << "请输入成绩：";
-    score = checkInput<int>(1);
+    score = checkInput(0,100);
 
     Choose newcho{ student_id, course_id, score };
     choose.push_back(newcho);
@@ -523,9 +526,9 @@ void ChooseManager::add()
 void ChooseManager::del()
 {
     cout << "请输入需要删除的学生学号：";
-    long student_id = checkInput<long>(3);
+    long student_id = checkInput();
     cout << "请输入需要删除的课程号：";
-    long course_id = checkInput<long>(3);
+    long course_id = checkInput();
     for (auto it = choose.begin(); it != choose.end(); it++)
     {
         if (it->student_id == student_id && it->course_id == course_id)
@@ -541,9 +544,9 @@ void ChooseManager::del()
 void ChooseManager::search()
 {
     cout << "请输入需要查询的学生学号：";
-    long student_id = checkInput<long>(3);
+    long student_id = checkInput();
     cout << "请输入需要查询的课程号：";
-    long course_id = checkInput<long>(3);
+    long course_id = checkInput();
     for (auto item : choose)
     {
         if (item.student_id == student_id && item.course_id == course_id)
@@ -558,19 +561,19 @@ void ChooseManager::search()
 void ChooseManager::change()
 {
     cout << "请输入需要修改的学生学号：";
-    long student_id = checkInput<long>(3);
+    long student_id = checkInput();
     cout << "请输入需要修改的课程号：";
-    long course_id = checkInput<long>(3);
+    long course_id = checkInput();
     for (auto item : choose)
     {
         if (item.student_id == student_id && item.course_id == course_id)
         {
             cout << "请输入学生学号：";
-            item.student_id = checkInput<long>(3);
+            item.student_id = checkInput();
             cout << "请输入课程号：";
-            item.course_id = checkInput<long>(3);
+            item.course_id = checkInput();
             cout << "请输入成绩：";
-            item.score = checkInput<int>(1);
+            item.score = checkInput(0,100);
             cout << "修改成功" << endl;
             return;
         }
@@ -583,7 +586,7 @@ void ChooseManager::sorted()
     cout << "请选择排序方式：" << endl;
     cout << "1.按学号排序" << endl;
     cout << "2.按课程号排序" << endl;
-    int i = checkInput<int>(1);
+    int i = checkInput(1,2);
     switch (i)
     {
     case 1:
@@ -610,9 +613,13 @@ void Manager::run()
     displayMessage.displayMenu();
     while (true)
     {
-        int i = checkInput<int>(4);
+        int i = checkInput(0,8);
         switch (i)
         {
+        case 0:
+        {
+            return;
+        }
         case 1:
         {
             fileManager.readData();
@@ -623,22 +630,22 @@ void Manager::run()
         case 2:
         {
             displayMessage.displayMessage(2);
-            int j = checkInput<int>(4);
+            int j = checkInput(1, 3);
             switch (j)
             {
             case 1:
             {
-                displayMessage.displayStudent(student);
+                displayMessage.displayStudent();
                 break;
             }
             case 2:
             {
-                displayMessage.displayCourse(course);
+                displayMessage.displayCourse();
                 break;
             }
             case 3:
             {
-                displayMessage.displayChoose(choose);
+                displayMessage.displayChoose();
                 break;
             }
             default:
@@ -652,7 +659,7 @@ void Manager::run()
         case 3:
         {
             displayMessage.displayMessage(3);
-            int j = checkInput<int>(4);
+            int j = checkInput(1,3);
             switch (j)
             {
             case 1:
@@ -683,7 +690,7 @@ void Manager::run()
         case 4:
         {
             displayMessage.displayMessage(4);
-            int j = checkInput<int>(4);
+            int j = checkInput(1,3);
             switch (j)
             {
             case 1:
@@ -715,7 +722,7 @@ void Manager::run()
         case 5:
         {
             displayMessage.displayMessage(5);
-            int j = checkInput();
+            int j = checkInput(1,3);
             switch (j)
             {
             case 1:
@@ -747,7 +754,7 @@ void Manager::run()
         case 6:
         {
             displayMessage.displayMessage(6);
-            int j = checkInput<int>(4);
+            int j = checkInput(1,3);
             switch (j)
             {
             case 1:
@@ -779,7 +786,7 @@ void Manager::run()
         case 7:
         {
             displayMessage.displayMessage(7);
-            int j = checkInput<int>(4);
+            int j = checkInput(1,3);
             switch (j)
             {
             case 1:
@@ -853,7 +860,7 @@ string checkInput(int type)
     }
 }
 
-int CheckInput(int min, int max)
+int checkInput(int min, int max)
 {
     int input;
     cin >> input;

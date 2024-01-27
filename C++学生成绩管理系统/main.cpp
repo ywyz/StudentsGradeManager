@@ -1,6 +1,5 @@
 #include <iostream>
 #include "manager.h"
-#include "data.h"
 
 using namespace std;
 
