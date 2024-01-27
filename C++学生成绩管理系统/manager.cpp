@@ -610,6 +610,9 @@ void ChooseManager::sorted()
 
 void Manager::run()
 {
+    StudentManager stumanager;
+    CourseManager  coumanager;
+    ChooseManager  chomanager;
     displayMessage.displayMenu();
     while (true)
     {
@@ -664,20 +667,17 @@ void Manager::run()
             {
             case 1:
             {
-                StudentManager studentManager;
-                studentManager.add();
+                stumanager.add();
                 break;
             }
             case 2:
             {
-                CourseManager courseManager;
-                courseManager.add();
+                coumanager.add();
                 break;
             }
             case 3:
             {
-                ChooseManager chooseManager;
-                chooseManager.add();
+                chomanager.add();
                 break;
             }
             default:
@@ -695,20 +695,17 @@ void Manager::run()
             {
             case 1:
             {
-                StudentManager studentManager;
-                studentManager.del();
+                stumanager.del();
                 break;
             }
             case 2:
             {
-                CourseManager courseManager;
-                courseManager.del();
+                coumanager.del();
                 break;
             }
             case 3:
             {
-                ChooseManager chooseManager;
-                chooseManager.del();
+                chomanager.del();
                 break;
             }
             default:
@@ -727,20 +724,17 @@ void Manager::run()
             {
             case 1:
             {
-                StudentManager studentManager;
-                studentManager.search();
+                stumanager.search();
                 break;
             }
             case 2:
             {
-                CourseManager courseManager;
-                courseManager.search();
+                coumanager.search();
                 break;
             }
             case 3:
             {
-                ChooseManager chooseManager;
-                chooseManager.search();
+                chomanager.search();
                 break;
             }
             default:
@@ -759,20 +753,17 @@ void Manager::run()
             {
             case 1:
             {
-                StudentManager studentManager;
-                studentManager.change();
+                stumanager.change();
                 break;
             }
             case 2:
             {
-                CourseManager courseManager;
-                courseManager.change();
+                coumanager.change();
                 break;
             }
             case 3:
             {
-                ChooseManager chooseManager;
-                chooseManager.change();
+                chomanager.change();
                 break;
             }
             default:
