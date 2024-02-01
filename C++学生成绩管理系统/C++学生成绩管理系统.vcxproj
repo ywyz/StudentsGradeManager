@@ -24,7 +24,9 @@
     <ClCompile Include="manager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="manager.h" />
+    <ClInclude Include="manager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

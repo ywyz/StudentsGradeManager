@@ -1,4 +1,3 @@
-#pragma once
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -8,7 +7,9 @@
 #include "manager.h"
 
 using namespace std;
-
+vector<Student> student;
+vector<Course> course;
+vector<Choose> choose;
 void DisplayMessage::displayMenu()
 {
     cout << "1.导入初始数据：" << endl;
@@ -27,7 +28,7 @@ void DisplayMessage::displayStudent()
 {
     cout << "学生信息显示：" << endl;
     cout << "学生姓名    学生年龄    学生性别    学生学号" << endl;
-    for (auto &item : student)
+    for (auto& item : student)
     {
         cout << item.name << "  " << item.age << "  " << item.sex << "  " << item.id << endl;
     }
@@ -37,7 +38,7 @@ void DisplayMessage::displayCourse()
 {
     cout << "课程信息显示：" << endl;
     cout << "课程名称    课程学分    课程号" << endl;
-    for (auto &item : course)
+    for (auto& item : course)
     {
         cout << item.name << "  " << item.credit << "  " << item.id << endl;
     }
@@ -47,7 +48,7 @@ void DisplayMessage::displayChoose()
 {
     cout << "选课信息显示：" << endl;
     cout << "学生学号    课程号    成绩" << endl;
-    for (auto &item : choose)
+    for (auto& item : choose)
     {
         cout << item.student_id << "  " << item.course_id << "  " << item.score << endl;
     }
@@ -80,6 +81,7 @@ void DisplayMessage::displayChoose(Choose cho)
 
 void DisplayMessage::displayMessage(int i)
 {
+    
     switch (i)
     {
     case 1:
@@ -185,6 +187,12 @@ void DisplayMessage::displayWrongMessage(int i)
 }
 
 FileManager::FileManager()
+{}
+
+FileManager::~FileManager()
+{
+}
+void FileManager::openFile()
 {
     FilePath = getFilePath();
     file.open(FilePath, ios::in | ios::out);
@@ -194,10 +202,6 @@ FileManager::FileManager()
         display.displayWrongMessage(4);
         exit(0);
     }
-}
-
-FileManager::~FileManager()
-{
 }
 
 string FileManager::getFilePath()
@@ -290,12 +294,9 @@ void FileManager::readData()
     file.close();
 }
 
-StudentManager::StudentManager() : Manager()
-{
-   
-}; // 构造函数
+StudentManager::StudentManager() : Manager() {
 
-StudentManager::~StudentManager() {};
+}; // 构造函数
 
 void StudentManager::add()
 {
@@ -305,7 +306,7 @@ void StudentManager::add()
     cout << "请输入学生姓名：";
     name = checkInput(0);
     cout << "请输入学生年龄：";
-    age = checkInput(0,100);
+    age = checkInput(0, 100);
     cout << "请输入学生性别：";
     sex = checkInput(1);
     cout << "请输入学生学号（8位）：";
@@ -375,7 +376,7 @@ void StudentManager::sorted()
     cout << "请选择排序方式：" << endl;
     cout << "1.按学号排序" << endl;
     cout << "2.按姓名排序" << endl;
-    int i = checkInput(1,2);
+    int i = checkInput(1, 2);
     switch (i)
     {
     case 1:
@@ -397,12 +398,9 @@ void StudentManager::sorted()
     }
 }
 
-CourseManager::CourseManager() : Manager()
-{
-   
-}; // 构造函数
+CourseManager::CourseManager() : Manager() {
 
-CourseManager::~CourseManager() {};
+}; // 构造函数
 
 void CourseManager::add()
 {
@@ -412,7 +410,7 @@ void CourseManager::add()
     cout << "请输入课程名称：";
     name = checkInput(0);
     cout << "请输入课程学分：";
-    credit = checkInput(0,10);
+    credit = checkInput(0, 10);
     cout << "请输入课程号（8位）：";
     id = checkInput();
 
@@ -478,7 +476,7 @@ void CourseManager::sorted()
     cout << "请选择排序方式：" << endl;
     cout << "1.按课程号排序" << endl;
     cout << "2.按课程名称排序" << endl;
-    int i = checkInput(1,2);
+    int i = checkInput(1, 2);
     switch (i)
     {
     case 1:
@@ -500,12 +498,9 @@ void CourseManager::sorted()
     }
 }
 
-ChooseManager::ChooseManager() : Manager()
-{
-    
-}; // 构造函数
+ChooseManager::ChooseManager() : Manager() {
 
-ChooseManager::~ChooseManager() {};
+}; // 构造函数
 
 void ChooseManager::add()
 {
@@ -516,7 +511,7 @@ void ChooseManager::add()
     cout << "请输入课程号：";
     course_id = checkInput();
     cout << "请输入成绩：";
-    score = checkInput(0,100);
+    score = checkInput(0, 100);
 
     Choose newcho{ student_id, course_id, score };
     choose.push_back(newcho);
@@ -573,7 +568,7 @@ void ChooseManager::change()
             cout << "请输入课程号：";
             item.course_id = checkInput();
             cout << "请输入成绩：";
-            item.score = checkInput(0,100);
+            item.score = checkInput(0, 100);
             cout << "修改成功" << endl;
             return;
         }
@@ -586,7 +581,7 @@ void ChooseManager::sorted()
     cout << "请选择排序方式：" << endl;
     cout << "1.按学号排序" << endl;
     cout << "2.按课程号排序" << endl;
-    int i = checkInput(1,2);
+    int i = checkInput(1, 2);
     switch (i)
     {
     case 1:
@@ -608,220 +603,7 @@ void ChooseManager::sorted()
     }
 }
 
-void Manager::run()
-{
-    StudentManager stumanager;
-    CourseManager  coumanager;
-    ChooseManager  chomanager;
-    displayMessage.displayMenu();
-    while (true)
-    {
-        int i = checkInput(0,8);
-        switch (i)
-        {
-        case 0:
-        {
-            return;
-        }
-        case 1:
-        {
-            fileManager.readData();
-            displayMessage.displayClear();
-            displayMessage.displayMenu();
-            break;
-        }
-        case 2:
-        {
-            displayMessage.displayMessage(2);
-            int j = checkInput(1, 3);
-            switch (j)
-            {
-            case 1:
-            {
-                displayMessage.displayStudent();
-                break;
-            }
-            case 2:
-            {
-                displayMessage.displayCourse();
-                break;
-            }
-            case 3:
-            {
-                displayMessage.displayChoose();
-                break;
-            }
-            default:
-                break;
-            }
-            displayMessage.displayClear();
-            displayMessage.displayMenu();
-            break;
-        }
 
-        case 3:
-        {
-            displayMessage.displayMessage(3);
-            int j = checkInput(1,3);
-            switch (j)
-            {
-            case 1:
-            {
-                stumanager.add();
-                break;
-            }
-            case 2:
-            {
-                coumanager.add();
-                break;
-            }
-            case 3:
-            {
-                chomanager.add();
-                break;
-            }
-            default:
-                break;
-            }
-            displayMessage.displayClear();
-            displayMessage.displayMenu();
-            break;
-        }
-        case 4:
-        {
-            displayMessage.displayMessage(4);
-            int j = checkInput(1,3);
-            switch (j)
-            {
-            case 1:
-            {
-                stumanager.del();
-                break;
-            }
-            case 2:
-            {
-                coumanager.del();
-                break;
-            }
-            case 3:
-            {
-                chomanager.del();
-                break;
-            }
-            default:
-                break;
-            }
-            displayMessage.displayClear();
-            displayMessage.displayMenu();
-            break;
-        }
-
-        case 5:
-        {
-            displayMessage.displayMessage(5);
-            int j = checkInput(1,3);
-            switch (j)
-            {
-            case 1:
-            {
-                stumanager.search();
-                break;
-            }
-            case 2:
-            {
-                coumanager.search();
-                break;
-            }
-            case 3:
-            {
-                chomanager.search();
-                break;
-            }
-            default:
-                break;
-            }
-            displayMessage.displayClear();
-            displayMessage.displayMenu();
-            break;
-        }
-
-        case 6:
-        {
-            displayMessage.displayMessage(6);
-            int j = checkInput(1,3);
-            switch (j)
-            {
-            case 1:
-            {
-                stumanager.change();
-                break;
-            }
-            case 2:
-            {
-                coumanager.change();
-                break;
-            }
-            case 3:
-            {
-                chomanager.change();
-                break;
-            }
-            default:
-                break;
-            }
-            displayMessage.displayClear();
-            displayMessage.displayMenu();
-            break;
-        }
-
-        case 7:
-        {
-            displayMessage.displayMessage(7);
-            int j = checkInput(1,3);
-            switch (j)
-            {
-            case 1:
-            {
-                student.erase(unique(student.begin(), student.end(), [](const Student& a, const Student& b)
-                    { return a.id == b.id; }),
-                    student.end());
-                cout << "去重成功" << endl;
-                break;
-            }
-            case 2:
-            {
-                course.erase(unique(course.begin(), course.end(), [](const Course& a, const Course& b)
-                    { return a.id == b.id; }),
-                    course.end());
-                cout << "去重成功" << endl;
-                break;
-            }
-            case 3:
-            {
-                choose.erase(unique(choose.begin(), choose.end(), [](const Choose& a, const Choose& b)
-                    { return a.student_id == b.student_id && a.course_id == b.course_id; }),
-                    choose.end());
-                cout << "去重成功" << endl;
-                break;
-            }
-            default:
-                break;
-            }
-            displayMessage.displayClear();
-            displayMessage.displayMenu();
-            break;
-        }
-
-        case 8:
-        {
-            fileManager.saveData();
-            displayMessage.displayClear();
-            displayMessage.displayMenu();
-            break;
-        }
-        }
-    }
-}
 
 Manager::Manager() : fileManager(), displayMessage() {}
 
@@ -839,7 +621,7 @@ string checkInput(int type)
     cin >> input;
     while (true)
     {
-        if (type != 0 && (input != "男" || input != "女"))
+        if (type != 0 && (input != "男" && input != "女"))
         {
             cout << "输入有误，请重新输入" << endl;
             cin.clear();
@@ -859,12 +641,14 @@ int checkInput(int min, int max)
     {
         if (!cin.good() || input < min || input > max)
         {
-			cout << "输入有误，请重新输入" << endl;
-			cin.clear();
-			cin.ignore(1024, '\n');
-			cin >> input;
-			continue;
-		}
+            cout << "输入有误，请重新输入" << endl;
+            cin.clear();
+            cin.ignore(1024, '\n');
+            cin >> input;
+            continue;
+        }
+        else
+            return input;
     }
 }
 
@@ -874,7 +658,7 @@ long checkInput()
     cin >> input;
     while (true)
     {
-        if ((to_string(input)).length() != 9)
+        if ((to_string(input)).length() != 8)
         {
             cout << "输入有误，请重新输入" << endl;
             cin.clear();
@@ -882,5 +666,6 @@ long checkInput()
             cin >> input;
             continue;
         }
+        return input;
     }
 }
