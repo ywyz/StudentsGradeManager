@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
+#include <iomanip>
 #include "data.h"
 #include "manager.h"
 
@@ -27,30 +28,44 @@ void DisplayMessage::displayMenu()
 void DisplayMessage::displayStudent()
 {
     cout << "学生信息显示：" << endl;
-    cout << "学生姓名    学生年龄    学生性别    学生学号" << endl;
+    cout << left << setw(15) << "学生姓名"
+        << setw(10) << "学生年龄"
+        << setw(10) << "学生性别"
+        << setw(10) << "学生学号" << endl;
     for (auto& item : student)
     {
-        cout << item.name << "  " << item.age << "  " << item.sex << "  " << item.id << endl;
+        cout << left << setw(15) << item.name
+            << setw(10) << item.age
+            << setw(10) << item.sex
+            << setw(10) << item.id << endl;
     }
 }
 
 void DisplayMessage::displayCourse()
 {
     cout << "课程信息显示：" << endl;
-    cout << "课程名称    课程学分    课程号" << endl;
+    cout << left << setw(15) << "课程名"
+        << setw(10) << "课程号"
+        << setw(10) << "课程学分" << endl;
     for (auto& item : course)
     {
-        cout << item.name << "  " << item.credit << "  " << item.id << endl;
+        cout << left << setw(15) << item.name
+            << setw(10) << item.id 
+            <<setw(10) << item.credit << endl;
     }
 }
 
 void DisplayMessage::displayChoose()
 {
-    cout << "选课信息显示：" << endl;
-    cout << "学生学号    课程号    成绩" << endl;
+    cout << "选课信息显示" << endl;
+    cout << left << setw(15) << "学生学号"
+        << setw(10) << "课程号"
+        << setw(10) << "成绩" << endl;
     for (auto& item : choose)
     {
-        cout << item.student_id << "  " << item.course_id << "  " << item.score << endl;
+        cout << left << setw(15) << item.student_id
+            << setw(10) << item.course_id
+            << setw(10) << item.score << endl;
     }
 }
 
@@ -86,7 +101,7 @@ void DisplayMessage::displayMessage(int i)
     {
     case 1:
     {
-        cout << "请输入文件名称（default:data.txt）: ";
+        cout << "请输入文件名称（默认:data.txt）: ";
         break;
     }
     case 2:
@@ -148,7 +163,7 @@ void DisplayMessage::displayClear()
     cout << "按任意键继续..." << endl;
     getchar();
     getchar();
-    system("clear");
+    system("cls");
 }
 
 void DisplayMessage::displayWrongMessage(int i)
@@ -208,22 +223,28 @@ string FileManager::getFilePath()
 {
     DisplayMessage displayMessage;
     displayMessage.displayMessage(1);
+    getchar();
     string path;
     getline(cin, path);
-    if (path == "")
+    while (true)
     {
-        path = FilePath;
+        if (path == "")
+        {
+            path = FilePath;
+        }
+        if (isFileExist(path))
+        {
+            return path;
+        }
+        else
+        {
+            displayMessage.displayWrongMessage(4);
+            getchar();
+            getline(cin, path);
+            continue;
+        }
     }
-    if (isFileExist(path))
-    {
-        return path;
-    }
-    else
-    {
-        displayMessage.displayWrongMessage(4);
-        return "";
-    }
-    return path;
+
 }
 
 bool FileManager::isFileExist(string path)
@@ -234,6 +255,7 @@ bool FileManager::isFileExist(string path)
 
 void FileManager::saveData()
 {
+    this->openFile();
     for (auto item : student)
     {
         file << item.name << ' ' << item.id << ' ' << item.age << ' ' << item.sex << endl;
